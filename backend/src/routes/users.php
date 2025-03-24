@@ -1,7 +1,7 @@
 <?php
 require_once '../controllers/UserController.php';
+require_once '../config/cors.php';
 
-header("Content-Type: application/json");
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 if ($requestMethod === "POST") {
@@ -27,8 +27,12 @@ if ($requestMethod === "POST") {
     }
 }
 
+
+
+
+
+
 // Logout user
 if ($requestMethod === "GET" && isset($_GET['logout'])) {
     echo json_encode(logoutUser());
 }
-?>

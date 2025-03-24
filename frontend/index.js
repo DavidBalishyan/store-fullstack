@@ -1,6 +1,7 @@
 const API_BASE = "http://st.local/src/routes";  // Change to your actual backend URL
 
-// 🟢 Register User
+
+// Register User
 document.getElementById("registerForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const username = document.getElementById("username").value;
@@ -9,22 +10,22 @@ document.getElementById("registerForm")?.addEventListener("submit", async (e) =>
 
     const response = await fetch(`${API_BASE}/users.php`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" }, // TODO
-        body: JSON.stringify({ username, email, password }) 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password })
     });
 
     const data = await response.json();
-    alert(data.message || data.error);
+    console.log(data.message || data.error);
     if (response.ok) window.location.href = "login.html";
 });
 
-// 🔵 Login User
+// Login User
 document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const response = await fetch(`${API_BASE}/users.php?login=true`, {
+    const response = await fetch(`${API_BASE}/users.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -39,14 +40,9 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
     }
 });
 
-// 🟡 Load User on Dashboard
-document.addEventListener("DOMContentLoaded", () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) document.getElementById("username")?.textContent = user.username;
-});
-
-// 🔴 Logout User
-document.getElementById("logoutBtn")?.addEventListener("click", () => {
+// Logout User
+document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+    await fetch(`${API_BASE}?logout=true`);
     localStorage.removeItem("user");
     window.location.href = "login.html";
 });
